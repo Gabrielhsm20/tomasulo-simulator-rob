@@ -1,0 +1,9 @@
+@for $i from 1 through 12{
+  .ma-#{$i}{ margin: calc(#{$i} * 4px); }
+  .my-#{$i}{ margin-top: calc(#{$i} * 4px); margin-bottom: calc(#{$i} * 4px); }
+  .mx-#{$i}{ margin-left: calc(#{$i} * 4px); margin-right: calc(#{$i} * 4px); }
+  .mt-#{$i}{ margin-top: calc(#{$i} * 4px); }
+  .mr-#{$i}{ margin-right: calc(#{$i} * 4px); }
+  .mb-#{$i}{ margin-bottom: calc(#{$i} * 4px); }
+  .ml-#{$i}{ margin-left: calc(#{$i} * 4px); }
+}

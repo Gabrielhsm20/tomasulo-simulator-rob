@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+@import './grid.scss';
+@import './margin.scss';
+@import './padding.scss';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+input, select, button {
+  border: none;
+  outline: none;
+}
+
+input:not([type="checkbox"]), select {
+  width: 100%;
+  height: 30px;
+  padding: 0 8px;
+  background-color: transparent;
+  border: 1px solid rgba(0,0,0,.4);
+  border-radius: 3px;
+}
+
+button {
+  height: 30px;
+  padding: 0 8px;
+  background-color: #EEE;
+  border: 1px solid rgba(0,0,0,.4);
+  border-radius: 3px;
+  color: #333;
+  cursor: pointer;
+}
+
+h2, p {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.hr {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(0,0,0,.1);
+}
+
+.w-100 { width: 100%; }
+.w-70 { width: 70%; }
+.d-flex { display: flex; }
+.capitalize { text-transform: capitalize; }
+.align-items-center { align-items: center; }
+.justify-space-between { justify-content: space-between; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    font-weight: 500;
+  }
+
+  td, th {
+    padding: 8px;
+    border: 1px solid #dddddd;
+    text-align: left;
+    font-size: 15px;
+  }
+
+  tr:nth-child(even) {
+    background-color: rgb(245, 245, 245);
+  }
+}

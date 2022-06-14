@@ -1,0 +1,24 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+
+  [class^="col"] {
+    padding-inline: 12px;
+  }
+}
+
+@for $i from 1 through 12{
+  .col-#{$i}{
+    width: calc(100% / (12 / #{$i}));
+  }
+}
+
+@each $size, $abbr in (0, xs), (768px, sm), (992px, md), (1200px, lg) {
+  @media (min-width: $size) {
+    @for $i from 1 through 12 {
+      .col-#{$abbr}-#{$i} {
+        width: calc(100% / (12 / #{$i}));
+      }
+    }
+  }
+}

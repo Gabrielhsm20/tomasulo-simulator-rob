@@ -1,0 +1,9 @@
+@for $i from 1 through 12{
+  .pa-#{$i}{ padding: calc(#{$i} * 4px); }
+  .py-#{$i}{ padding-top: calc(#{$i} * 4px); padding-bottom: calc(#{$i} * 4px); }
+  .px-#{$i}{ padding-left: calc(#{$i} * 4px); padding-right: calc(#{$i} * 4px); }
+  .pt-#{$i}{ padding-top: calc(#{$i} * 4px); }
+  .pr-#{$i}{ padding-right: calc(#{$i} * 4px); }
+  .pb-#{$i}{ padding-bottom: calc(#{$i} * 4px); }
+  .pl-#{$i}{ padding-left: calc(#{$i} * 4px); }
+}
