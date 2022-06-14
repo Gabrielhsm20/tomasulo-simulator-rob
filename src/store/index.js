@@ -19,10 +19,10 @@ export default new Vuex.Store({
     },
     instructions: [
       { operation: 'ADD', data: ['X1', 'X4', 'X6'] },
-      { operation: 'SUB', data: ['X2', 'X1', 'X4'] },
+      { operation: 'SUB', data: ['X2', 'X4', 'X1'] },
       { operation: 'CBZ', data: ['X4', '#2', ''] },
       { operation: 'STUR', data: ['X1', 'X6', '#0'] },
-      { operation: 'SUB', data: ['X3', 'X5', 'X0'] },
+      { operation: 'SUB', data: ['X3', 'X5', 'X2'] },
       { operation: 'MUL', data: ['X0', 'X1', 'X0'] },
       { operation: 'LDUR', data: ['X13', 'X5', '#3'] },
     ],

@@ -21,8 +21,8 @@
             :key="`register-value-${index}`"
           >
             {{
-              registerStatus[registerKey].order
-                ? `#${registerStatus[registerKey].order}`
+              registerStatus[registerKey].instructionOrder
+                ? `#${registerStatus[registerKey].instructionOrder}`
                 : ''
             }}
           </td>

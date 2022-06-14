@@ -174,9 +174,9 @@ export default {
       commit('updateRegisterStatus', {
         register: instruction.data[0],
         functionalUnit: null,
-        order: null,
+        instructionIndex: null,
+        instructionOrder: null,
         busy: false,
-        value: null,
       });
     },
     writeInstructionsResult({ state, commit, dispatch, rootGetters }) {
@@ -228,9 +228,9 @@ export default {
   
             commit('updateRegisterStatus', {
               register: state.instructionList[i]?.data[0],
-              value: '',
               functionalUnit: null,
-              order: null,
+              instructionIndex: null,
+              instructionOrder: null,
               busy: false,
             });
             functionalUnitsToFree.push(i + 1);
@@ -341,8 +341,9 @@ export default {
       ) {
         commit('updateRegisterStatus', {
           register: instruction.data[0],
-          value: functionalUnit.id,
-          order: instruction.order,
+          functionalUnit: functionalUnit.id,
+          instructionIndex: instruction.index,
+          instructionOrder: instruction.order,
           busy: true,
         });
       }
@@ -404,39 +405,42 @@ export default {
       }
       else {
         if (['CBZ'].includes(instruction.operation)) {
-          reg_j = state.registerStatus[instruction.data[0]]?.value;
-          reg_k = state.registerStatus[instruction.data[1]]?.value;
+          reg_j = state.registerStatus[instruction.data[0]];
+          reg_k = state.registerStatus[instruction.data[1]];
           reg_j_inst = instruction.data[0];
           reg_k_inst = instruction.data[1];
         } else {
-            reg_j = state.registerStatus[instruction.data[1]]?.value;
-            reg_k = state.registerStatus[instruction.data[2]]?.value;
-            reg_j_inst = instruction.data[1];
-            reg_k_inst = instruction.data[2]; 
+          reg_j = state.registerStatus[instruction.data[1]];
+          reg_k = state.registerStatus[instruction.data[2]];
+          reg_j_inst = instruction.data[1];
+          reg_k_inst = instruction.data[2];
         }
 
-        if (!reg_j || reg_j === functionalUnit.id)
+        if (!reg_j.functionalUnit || reg_j.functionalUnit === functionalUnit.id)
             vj = reg_j_inst;
+        else if (state.functionalUnits[reg_j.functionalUnit]) {
+          const necessaryInstructionJ =  state.instructionList[state.functionalUnits[reg_j.functionalUnit]?.instructionIndex];
+          if (necessaryInstructionJ && necessaryInstructionJ.order < instruction.order)
+            qj = `#${necessaryInstructionJ.order}`;
+          else
+            vj = state.instructionList[reg_j.instructionIndex].value;
+        }
         else
-            if (
-              state.functionalUnits[reg_j] &&
-              state.functionalUnits[reg_j].order < instruction.order
-            )
-                qj = reg_j;
-            else
-                vj = reg_j;
+          vj = reg_j.functionalUnit;
 
         if (!['CBZ'].includes(instruction.operation)) {
-          if (!reg_k || reg_k === functionalUnit.id)
-              vk = reg_k_inst;
+          console.log(reg_k, reg_k_inst, functionalUnit);
+          if (!reg_k.functionalUnit || reg_k.functionalUnit === functionalUnit.id) {
+            vk = reg_k_inst;
+          } else if (state.functionalUnits[reg_k.functionalUnit]) {
+            const necessaryInstructionK =  state.instructionList[state.functionalUnits[reg_k.functionalUnit]?.instructionIndex];
+            if (necessaryInstructionK && necessaryInstructionK.order < instruction.order)
+              qk = `#${necessaryInstructionK.order}`;
+            else
+              vk = state.instructionList[reg_k.instructionIndex].value;
+          }
           else
-              if (
-                state.functionalUnits[reg_k] &&
-                state.functionalUnits[reg_k].order < instruction.order
-              )
-                  qk = reg_k;
-              else
-                  vk = reg_k;
+            vk = reg_j.functionalUnit;
         }
       }
 
@@ -471,7 +475,7 @@ export default {
     getFunctionalUnits: (state) => state.functionalUnits,
     getRegisterStatus: (state) => state.registerStatus,
     getNextInstruction: (state) => {
-      return state.instructionList.every((el) => el.status.execute)
+      return state.instructionList.every((el) => el.status.dispatch)
         ? null
         : state.instructionList.reduce((prev, current) => {
         if (prev === undefined) return current;
@@ -480,7 +484,7 @@ export default {
         if (
           prev.order > current.order ||
           (prev.busy && !current.busy) ||
-          (prev.busy && current.busy && !current.status.execute)
+          (prev.busy && current.busy && !current.status.dispatch)
         )
           return current;
       
